@@ -1,0 +1,37 @@
+/*
+Imports
+ */
+plugins {
+    id "io.spring.dependency-management" version '1.1.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
+}
+
+/*
+Properties
+ */
+def comGoogleGuavaVersion = '31.1-jre'
+
+/*
+Root manifest
+ */
+allprojects {
+    group "ru.otus.panferov"
+
+    /*
+    Settings
+     */
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    /*
+    Dependency management
+     */
+    apply plugin: "io.spring.dependency-management"
+    dependencyManagement {
+        dependencies {
+            dependency "com.google.guava:guava:${comGoogleGuavaVersion}"
+        }
+    }
+}
