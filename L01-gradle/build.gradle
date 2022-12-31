@@ -7,14 +7,6 @@ plugins {
 }
 
 /*
-Settings
- */
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-/*
 Dependencies
  */
 dependencies {

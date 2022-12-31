@@ -10,7 +10,6 @@ public class Main {
         String separator = "; ";
 
         System.out.println(joinArguments(separator, strings));
-
     }
 
     public static String joinArguments(String separator, List<String> strings) {
