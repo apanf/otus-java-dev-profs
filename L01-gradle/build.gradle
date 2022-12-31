@@ -1,0 +1,25 @@
+/*
+Imports
+ */
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+/*
+Dependencies
+ */
+dependencies {
+    implementation 'com.google.guava:guava'
+}
+
+shadowJar {
+    archiveBaseName.set('gradleHelloWorld')
+    archiveVersion.set('0.1')
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': 'ru.otus.panferov.Main'
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
