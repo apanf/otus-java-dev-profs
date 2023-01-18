@@ -31,6 +31,9 @@ allprojects {
     apply plugin: "io.spring.dependency-management"
     dependencyManagement {
         dependencies {
+            imports {
+                mavenBom "org.springframework.boot:spring-boot-dependencies:3.0.1"
+            }
             dependency "com.google.guava:guava:${comGoogleGuavaVersion}"
         }
     }
