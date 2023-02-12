@@ -8,6 +8,7 @@ import homework.annotations.MeterAnnotationHandler;
 import homework.annotations.Save;
 import homework.annotations.SaveAnnotationHandler;
 import homework.testClasses.UnitOfWorkDouble;
+import homework.testClasses.UnitOfWorkTestImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,8 +36,8 @@ public class IocTest {
     @Test
     @DisplayName("Проверка, что для одного и того же класса используется 1 обработчик")
     public void test1() {
-        UnitOfWork<String> work1 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
-        UnitOfWork<String> work2 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
+        UnitOfWork<String> work1 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkTestImpl.class);
+        UnitOfWork<String> work2 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkTestImpl.class);
 
         work1.doWork();
         work1.doWork("test");
@@ -48,7 +49,7 @@ public class IocTest {
     @Test
     @DisplayName("Проверка, что для разных классов, используются разные обработчики")
     public void test2() {
-        UnitOfWork<String> work1 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
+        UnitOfWork<String> work1 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkTestImpl.class);
         UnitOfWork<Double> work2 = (UnitOfWork<Double>) ioc.createClass(UnitOfWorkDouble.class);
 
         work1.doWork();

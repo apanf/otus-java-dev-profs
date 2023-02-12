@@ -7,6 +7,7 @@ import homework.annotations.Meter;
 import homework.annotations.MeterAnnotationHandler;
 import homework.annotations.Save;
 import homework.annotations.SaveAnnotationHandler;
+import homework.testClasses.UnitOfWorkTestImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class AnnotationHandlersTest {
     @Test
     @DisplayName("Проверка работы аннотаций с фазой вызова BEFORE")
     public void test1() {
-        UnitOfWork<String> work = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
+        UnitOfWork<String> work = (UnitOfWork<String>) ioc.createClass(UnitOfWorkTestImpl.class);
 
         work.doWork(1, 2, "1", "2", "3");
 
@@ -57,7 +58,7 @@ public class AnnotationHandlersTest {
     @Test
     @DisplayName("Проверка работы аннотаций с фазой вызова AROUND")
     public void test2() {
-        UnitOfWork<String> work = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
+        UnitOfWork<String> work = (UnitOfWork<String>) ioc.createClass(UnitOfWorkTestImpl.class);
 
         work.doWork(1, 2, "1", "2", "3");
 
