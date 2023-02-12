@@ -35,10 +35,12 @@ public class IocTest {
     @Test
     @DisplayName("Проверка, что для одного и того же класса используется 1 обработчик")
     public void test1() {
-        UnitOfWork<String> work = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
+        UnitOfWork<String> work1 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
+        UnitOfWork<String> work2 = (UnitOfWork<String>) ioc.createClass(UnitOfWorkImpl.class);
 
-        work.doWork();
-        work.doWork("test");
+        work1.doWork();
+        work1.doWork("test");
+        work2.doWork();
 
         assertEquals(1, ioc.getHandlers().size());
     }
