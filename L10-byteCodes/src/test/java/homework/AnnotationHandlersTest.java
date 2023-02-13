@@ -7,6 +7,9 @@ import homework.annotations.Meter;
 import homework.annotations.MeterAnnotationHandler;
 import homework.annotations.Save;
 import homework.annotations.SaveAnnotationHandler;
+import homework.ioc.Ioc;
+import homework.ioc.IocOpt;
+import homework.ioc.IocVer1;
 import homework.testClasses.UnitOfWorkTestImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +44,7 @@ public class AnnotationHandlersTest {
         annotationHandlers.put(Save.class, saveAnnotationHandler);
         annotationHandlers.put(Meter.class, meterAnnotationHandler);
 
-        ioc = new Ioc(annotationHandlers);
+        ioc = new IocOpt(annotationHandlers);
     }
 
     @Test
