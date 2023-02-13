@@ -1,9 +1,8 @@
-package homework;
+package homework.ioc;
 
 import homework.annotations.AnnotationHandler;
 import homework.annotations.AnnotationHandler.AnnotationDto;
 import homework.annotations.AnnotationHandler.HandlePhase;
-import lombok.Getter;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 import java.lang.annotation.Annotation;
@@ -17,39 +16,50 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static homework.annotations.AnnotationHandler.HandlePhase.AFTER;
 import static homework.annotations.AnnotationHandler.HandlePhase.AROUND;
 import static homework.annotations.AnnotationHandler.HandlePhase.BEFORE;
 
-public class Ioc {
-    @Getter
-    private final Map<Class<?>, InvocationHandler> handlers = new HashMap<>();
+
+/*
+Класс контейнера после оптимизации.
+ */
+public class IocOpt implements Ioc {
+    private final Map<Class<?>, Object> proxyCache = new HashMap<>();
     private final Map<Class<? extends Annotation>, AnnotationHandler> annotationHandlers;
 
-    public Ioc(Map<Class<? extends Annotation>, AnnotationHandler> annotationHandlers) {
+    public IocOpt(Map<Class<? extends Annotation>, AnnotationHandler> annotationHandlers) {
         this.annotationHandlers = annotationHandlers;
     }
 
     public Object createClass(Class<?> clazz) {
-        InvocationHandler handler = handlers.computeIfAbsent(clazz, Handler::new);
-        Class<?>[] interfaces = clazz.getInterfaces();
+        return proxyCache.computeIfAbsent(clazz, cl -> {
+            Handler handler = new Handler(cl);
+            Class<?>[] interfaces = clazz.getInterfaces();
 
-        return Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces, handler);
+            return Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces, handler);
+        });
     }
 
-    private class Handler<T> implements InvocationHandler {
-        private final T instance;
+    public Set<Class<?>> getProxiedClasses() {
+        return proxyCache.keySet();
+    }
+
+    private class Handler implements InvocationHandler {
+        private final Object instance;
         /*
         Method - методо содержащий обрабатываемую аннотацию.
         HandlePhase - фаза обработки аннотации.
         List - список обработчиков аннотаций на конкретной фазе.
          */
         private final Map<Method, Map<HandlePhase, List<AnnotationHandler>>> mappedAnnotationHandlers = new HashMap<>();
+        private final Map<String, Method> mappedAnnotatedMethods = new HashMap<>();
         private static final List<HandlePhase> BEFORE_METHOD_PHASES = List.of(BEFORE, AROUND);
         private static final List<HandlePhase> AFTER_METHOD_PHASES = List.of(AROUND, AFTER);
 
-        public Handler(Class<T> instanceClass) {
+        public Handler(Class<?> instanceClass) {
             try {
                 this.instance = instanceClass.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
@@ -83,10 +93,10 @@ public class Ioc {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Method proxiedInstanceMethod =
-                    MethodUtils.getMatchingMethod(instance.getClass(), method.getName(), method.getParameterTypes());
-            var handleTypeMap =
-                    Optional.ofNullable(mappedAnnotationHandlers.get(proxiedInstanceMethod)).orElse(new HashMap<>());
+            Method annotatedMethod = mappedAnnotatedMethods.computeIfAbsent(method.getName(),
+                    (mn) -> MethodUtils.getMatchingMethod(
+                            instance.getClass(), mn, method.getParameterTypes()));
+            var handleTypeMap = mappedAnnotationHandlers.getOrDefault(annotatedMethod, new HashMap<>());
             AnnotationDto dto = AnnotationDto.builder().proxy(proxy).method(method).args(args).build();
             Object result;
 

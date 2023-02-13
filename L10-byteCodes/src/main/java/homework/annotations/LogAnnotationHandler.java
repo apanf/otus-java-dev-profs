@@ -2,6 +2,7 @@ package homework.annotations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.lang.annotation.Annotation;
@@ -34,19 +35,13 @@ public class LogAnnotationHandler implements AnnotationHandler {
 
         if (args == null)
             return "null";
-        len= args.length;
+        len = args.length;
         sb = new StringBuilder();
         for (int i = 0; i < len; i++) {
-            sb.append(reflectToString(args[i]));
+            sb.append((args[i]));
             if (i < len - 1)
                 sb.append(", ");
         }
         return sb.toString();
-    }
-
-    private static String reflectToString(Object o) {
-        return ClassUtils.isPrimitiveOrWrapper(o.getClass()) ?
-                o.toString() :
-                ToStringBuilder.reflectionToString(o);
     }
 }
