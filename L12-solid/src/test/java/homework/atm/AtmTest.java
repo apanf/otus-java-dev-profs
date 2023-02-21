@@ -28,7 +28,7 @@ class AtmTest {
 
     @BeforeEach
     public void setUp() {
-        atm = new Atm(Map.of(RUB, new RubLogic()));
+        atm = new AtmImpl(Map.of(RUB, new RubLogic()));
     }
 
     @Test
