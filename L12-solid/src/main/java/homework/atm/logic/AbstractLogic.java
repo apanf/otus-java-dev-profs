@@ -23,7 +23,8 @@ abstract public class AbstractLogic implements Logic {
         floorNominalBanknote = getFloorDenominationCassette(cassettes, requestAmount);
         result = new HashMap<>();
         if (resultCalculator(cassettes, requestAmount, floorNominalBanknote, result) != 0)
-            throw new InsufficientCassetteRemainderException("Нет достаточного средств в банкомате для снятия запрошенной суммы");
+            throw new InsufficientCassetteRemainderException(
+                    "Нет достаточного количества средств в банкомате для снятия запрошенной суммы");
         return result;
     }
 
@@ -57,8 +58,8 @@ abstract public class AbstractLogic implements Logic {
         for (var each : cassettes.descendingKeySet())
             if (each.getDenomination() <= requestAmount)
                 return each;
-        throw new WithdrawalCashException("Запрошенная сумма не может быть выдана. Сумма к снятию должна быть кратна "
-                + cassettes.firstKey());
+        throw new WithdrawalCashException("Запрошенная сумма не может быть выдана. Сумма к снятию должна быть кратна {}",
+                cassettes.firstKey());
     }
 
     private void checkWithdrawalPossibility(SortedMap<Banknote, Cassette> cassettes, int requestAmount) {
@@ -70,7 +71,7 @@ abstract public class AbstractLogic implements Logic {
         if (requestAmount < 1)
             throw new WithdrawalCashException("Запрошенная сумма должна быть положительна");
         if (requestAmount % minDenomination != 0)
-            throw new WithdrawalCashException("Запрошенная сумма не может быть выдана. Сумма к снятию должна быть кратна "
-                    + minDenomination);
+            throw new WithdrawalCashException("Запрошенная сумма не может быть выдана. Сумма к снятию должна быть кратна {}",
+                    minDenomination);
     }
 }

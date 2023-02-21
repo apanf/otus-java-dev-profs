@@ -19,7 +19,7 @@ public class CassetteImpl implements Cassette {
     @Override
     public int reduceCashAmount(int amount) {
         if (amount > remainder)
-            throw new CurrencyCassetteException("Кассета " + this + "не содержит требуемой суммы.");
+            throw new CurrencyCassetteException("Кассета {} не содержит требуемой суммы.", this);
         return this.remainder -= amount;
     }
 

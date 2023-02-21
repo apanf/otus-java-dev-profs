@@ -52,7 +52,7 @@ public class Atm {
         for (var each : cassettes) {
             CurrencyName curName = each.getBanknote().getName();
 
-            checkSupportedType(curName, "Банкомат не поддерживает работу с этим типом валюты: " + curName);
+            checkSupportedType(curName, "Банкомат не поддерживает работу с этим типом валюты: {}", curName);
         }
     }
 
@@ -62,12 +62,12 @@ public class Atm {
 
     public Map<Banknote, Integer> getCash(int amount) {
         if (supportedCurrencies.size() != 1)
-            throw new CurrencyException("Укажите тип валюты. Банкомат поддерживает: " + supportedCurrencies);
+            throw new CurrencyException("Укажите тип валюты. Банкомат поддерживает: {}", supportedCurrencies);
         return getCash(supportedCurrencies.iterator().next(), amount);
     }
 
     public Map<Banknote, Integer> getCash(CurrencyName currencyName, int amount) {
-        checkSupportedType(currencyName, "Банкомат не работает с этой валюбой: " + currencyName);
+        checkSupportedType(currencyName, "Банкомат не работает с этой валюбой: {}", currencyName);
 
         Map<Banknote, Integer> withdrawalPlan = logics.get(currencyName)
                 .calculateCashForWithdrawalPlan(Map.copyOf(cassettes.get(currencyName)), amount);
@@ -75,9 +75,9 @@ public class Atm {
         return recalculateCassetteCashRemainder(currencyName, withdrawalPlan);
     }
 
-    private void checkSupportedType(CurrencyName currencyName, String msg) {
+    private void checkSupportedType(CurrencyName currencyName, String msg, Object... args) {
         if (!supportedCurrencies.contains(currencyName))
-            throw new CurrencyException(msg);
+            throw new CurrencyException(msg, args);
     }
 
     private Map<Banknote, Integer> recalculateCassetteCashRemainder(CurrencyName currencyName, Map<Banknote, Integer> cashMap) {
