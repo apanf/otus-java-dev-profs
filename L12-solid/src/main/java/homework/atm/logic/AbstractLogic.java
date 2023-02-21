@@ -13,7 +13,7 @@ import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-abstract public class AbstractLogic implements Logic {
+abstract public class AbstractLogic implements AtmLogic {
     public Map<Banknote, Integer> calculateCashForWithdrawalPlan(Map<Banknote, Cassette> atmCassettes, int requestAmount) {
         NavigableMap<Banknote, Cassette> cassettes = getSortedCassettesMap(atmCassettes);
         Banknote floorNominalBanknote;

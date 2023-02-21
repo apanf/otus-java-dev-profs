@@ -6,7 +6,7 @@ import homework.currency.CurrencyName;
 
 import java.util.Map;
 
-public interface Logic {
+public interface AtmLogic {
     CurrencyName getCurrencyName();
 
     Map<Banknote, Integer> calculateCashForWithdrawalPlan(Map<Banknote, Cassette> atmCassettes, int amount);

@@ -1,7 +1,7 @@
 package homework.atm;
 
 import homework.atm.cassette.Cassette;
-import homework.atm.logic.Logic;
+import homework.atm.logic.AtmLogic;
 import homework.currency.Banknote;
 import homework.currency.CurrencyName;
 import homework.exception.CurrencyException;
@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class AtmImpl implements Atm {
-    private final Map<CurrencyName, Logic> logics;
+    private final Map<CurrencyName, AtmLogic> logics;
     private final Map<CurrencyName, Map<Banknote, Cassette>> cassettes = new HashMap<>();
     private final Set<CurrencyName> supportedCurrencies;
 
-    public AtmImpl(Map<CurrencyName, Logic> logics) {
+    public AtmImpl(Map<CurrencyName, AtmLogic> logics) {
         this.logics = logics;
         this.supportedCurrencies = logics.keySet();
         for (var each : supportedCurrencies)
@@ -29,7 +29,7 @@ public class AtmImpl implements Atm {
     }
 
     @Override
-    public void setLogic(Logic logic) {
+    public void setLogic(AtmLogic logic) {
         checkSupportedType(logic.getCurrencyName(), "Банкомат не поддерживает работу с данной валютой.");
         this.logics.put(logic.getCurrencyName(), logic);
     }

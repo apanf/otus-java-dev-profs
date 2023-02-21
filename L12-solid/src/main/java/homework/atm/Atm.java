@@ -1,7 +1,7 @@
 package homework.atm;
 
 import homework.atm.cassette.Cassette;
-import homework.atm.logic.Logic;
+import homework.atm.logic.AtmLogic;
 import homework.currency.Banknote;
 import homework.currency.CurrencyName;
 
@@ -12,7 +12,7 @@ import java.util.Set;
 public interface Atm {
     Set<CurrencyName> getSupportedCurrencies();
 
-    void setLogic(Logic logic);
+    void setLogic(AtmLogic logic);
 
     void addCassettes(List<Cassette> cassettes);
 
