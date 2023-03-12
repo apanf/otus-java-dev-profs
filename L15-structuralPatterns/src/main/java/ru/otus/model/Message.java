@@ -1,6 +1,6 @@
 package ru.otus.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Message {
     private final long id;
@@ -133,6 +133,34 @@ public class Message {
                 ", field12='" + field12 + '\'' +
                 ", field13='" + field13 + '\'' +
                 '}';
+    }
+
+    public Message getDeepCopy() {
+        return getDeepCopy(id);
+    }
+
+    public Message getDeepCopy(long id) {
+        ObjectForMessage field13 = null;
+
+        if (this.field13 != null) {
+            field13 = new ObjectForMessage();
+            field13.setData(new ArrayList<>(this.field13.getData()));
+        }
+        return new Message.Builder(id)
+                .field1(field1)
+                .field2(field2)
+                .field3(field3)
+                .field4(field4)
+                .field5(field5)
+                .field6(field6)
+                .field7(field7)
+                .field8(field8)
+                .field9(field9)
+                .field10(field10)
+                .field11(field11)
+                .field12(field12)
+                .field13(field13)
+                .build();
     }
 
     public static class Builder {
