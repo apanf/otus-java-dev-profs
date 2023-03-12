@@ -144,7 +144,10 @@ public class Message {
 
         if (this.field13 != null) {
             field13 = new ObjectForMessage();
-            field13.setData(new ArrayList<>(this.field13.getData()));
+            var list = this.field13.getData();
+
+            if (list != null)
+                field13.setData(new ArrayList<>(list));
         }
         return new Message.Builder(id)
                 .field1(field1)
